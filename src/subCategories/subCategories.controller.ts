@@ -8,6 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { SubCategoriesDto } from './dto/create-subCategories.dto';
+import { UpdateSubCategoriesDto } from './dto/update-subCategories.dto';
 import { SubCategoriesService } from './subCategories.service';
 
 @Controller('subcategories')
@@ -30,7 +31,10 @@ export class SubCategoriesController {
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() subCategoriesBody: SubCategoriesDto) {
+  update(
+    @Param('id') id: number,
+    @Body() subCategoriesBody: UpdateSubCategoriesDto,
+  ) {
     return this.subcategoriesService.update(id, subCategoriesBody);
   }
 

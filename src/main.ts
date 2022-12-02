@@ -1,11 +1,17 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { AllExceptionsFilter } from './errors/all-exceptions.filter';
+import { ValidationPipe } from '@nestjs/common';
 
 const start = async () => {
   try {
     const PORT = process.env.PORT || 3333;
     const app = await NestFactory.create(AppModule);
+
+    const adapterHost = app.get(HttpAdapterHost);
+    app.useGlobalFilters(new AllExceptionsFilter(adapterHost));
+    app.useGlobalPipes(new ValidationPipe());
 
     const config = new DocumentBuilder()
       .setTitle('NestJs TEST')

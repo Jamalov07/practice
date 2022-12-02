@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { ProductsDto } from './dto/create-products.dto';
+import { UpdateProductsDto } from './dto/update-product.dto';
 import { Products } from './products.model';
 
 @Injectable()
@@ -44,7 +45,7 @@ export class ProductsService {
     return newproduct;
   }
 
-  async update(id: number, productBody: ProductsDto) {
+  async update(id: number, productBody: UpdateProductsDto) {
     const product = await this.productRepository.findOne({
       where: { product_id: id },
     });

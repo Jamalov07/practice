@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { SubCategoriesDto } from '../subCategories/dto/create-subCategories.dto';
 import { SubCategories } from '../subCategories/subCategories.model';
+import { UpdateSubCategoriesDto } from './dto/update-subCategories.dto';
 
 @Injectable()
 export class SubCategoriesService {
@@ -46,7 +47,7 @@ export class SubCategoriesService {
     return newSubCategory;
   }
 
-  async update(id: number, subCategoryBody: SubCategoriesDto) {
+  async update(id: number, subCategoryBody: UpdateSubCategoriesDto) {
     const subCategory = await this.subCategoryRepository.findOne({
       where: { sub_category_id: id },
     });
