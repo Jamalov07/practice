@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
+import { SubCategories } from '../subCategories/subCategories.model';
 
 interface Cat {
   category_id: number;
@@ -20,4 +21,7 @@ export class Categories extends Model<Categories, Cat> {
   @ApiProperty({ example: 'nouts', description: 'Categories nomi' })
   @Column({ type: DataType.STRING, allowNull: false })
   category_name: string;
+
+  @HasMany(() => SubCategories)
+  subCategories: SubCategories[];
 }

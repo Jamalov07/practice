@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
+import { SubCategories } from '../subCategories/subCategories.model';
 
 interface Prod {
   category_id: number;
@@ -18,9 +19,10 @@ export class Products extends Model<Products, Prod> {
   product_id: number;
 
   @ApiProperty({ example: '3', description: 'sub categories idsi' })
+  @ForeignKey(()=>SubCategories)
   @Column({ type: DataType.INTEGER, allowNull: false })
   sub_category_id: number;
-
+  
   @ApiProperty({ example: 'redmi', description: 'Products modeli' })
   @Column({ type: DataType.STRING, allowNull: false })
   model: string;
