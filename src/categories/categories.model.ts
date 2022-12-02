@@ -7,9 +7,9 @@ interface Cat {
   category_name: string;
 }
 
-@Table({ tableName: 'subcategories' })
+@Table({ tableName: 'categories' })
 export class Categories extends Model<Categories, Cat> {
-  @ApiProperty({ example: '1', description: 'SubCategories ning unikal idsi' })
+  @ApiProperty({ example: '1', description: 'categories ning unikal idsi' })
   @Column({
     type: DataType.INTEGER,
     unique: true,
