@@ -8,5 +8,6 @@ import { SubCategoriesService } from './subCategories.service';
   imports: [SequelizeModule.forFeature([SubCategories])],
   controllers: [SubCategoriesController],
   providers: [SubCategoriesService],
+  exports: [SubCategoriesService],
 })
 export class SubCategoriesModule {}

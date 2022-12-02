@@ -77,4 +77,14 @@ export class ProductsService {
       product: product.product_id,
     };
   }
+
+  async getProducts(body: UpdateProductsDto) {
+    const products = await this.productRepository.findAll({
+      where: { ...body },
+    });
+    if (!products.length) {
+      throw new BadRequestException('Products not found');
+    }
+    return products;
+  }
 }

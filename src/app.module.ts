@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CategoriesModule } from './categories/categories.module';
 import { SubCategoriesModule } from './subCategories/subCategories.module';
@@ -10,6 +10,8 @@ import { resolve } from 'path';
 import { Categories } from './categories/categories.model';
 import { SubCategories } from './subCategories/subCategories.model';
 import { Products } from './pruducts/products.model';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -22,13 +24,15 @@ import { Products } from './pruducts/products.model';
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
-      models: [Categories,SubCategories,Products],
+      models: [Categories, SubCategories, Products],
       autoLoadModels: true,
       logging: false,
     }),
-    CategoriesModule,
+    forwardRef(()=>CategoriesModule),
     SubCategoriesModule,
     ProductsModule,
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

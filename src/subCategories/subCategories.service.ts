@@ -24,6 +24,7 @@ export class SubCategoriesService {
   async getOne(id: number) {
     const subCategory = await this.subCategoryRepository.findOne({
       where: { sub_category_id: id },
+      include: { all: true },
     });
     if (!subCategory) {
       throw new BadRequestException('subCategory not found');
@@ -81,5 +82,29 @@ export class SubCategoriesService {
       message: 'subCategory deleted',
       subCategory: subCategory.sub_category_id,
     };
+  }
+
+  async getByCategory(id: number) {
+    const subCategories = await this.subCategoryRepository.findAll({
+      where: { category_id: id },
+      include: { all: true },
+    });
+    if (!subCategories) {
+      throw new BadRequestException('category not found or category is empty');
+    }
+    return subCategories;
+  }
+
+  async getByBody(categoryId: number, subCategoryId: number) {
+    const products = await (
+      await this.subCategoryRepository.findOne({
+        where: { category_id: categoryId, sub_category_id: subCategoryId },
+        include: { all: true },
+      })
+    ).products;
+    if (!products) {
+      throw new BadRequestException('subCategory not found or it is empty');
+    }
+    return products;
   }
 }
