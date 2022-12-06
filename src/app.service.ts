@@ -73,14 +73,10 @@ export class AppService {
       }
       return products;
     } else if (
-      !body.categoryId &&
-      (body.subcategoryId ||
-        body.color ||
-        body.model ||
-        body.product_name ||
-        body.price)
+      !categoryid &&
+      (subcategoryid || color || model || productname || price)
     ) {
-      const products = await this.productService.getProducts(body);
+      const products = await this.productService.getProducts(str);
       return products;
     }
   }

@@ -25,7 +25,7 @@ export class ProductsController {
     }
   }
 
-  @Get()
+  @Get('all')
   getAll() {
     return this.productsService.getAll();
   }
