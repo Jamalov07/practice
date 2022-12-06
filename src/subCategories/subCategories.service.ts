@@ -95,16 +95,16 @@ export class SubCategoriesService {
     return subCategories;
   }
 
-  async getByBody(categoryId: number, subCategoryId: number) {
-    const products = await (
-      await this.subCategoryRepository.findOne({
-        where: { category_id: categoryId, sub_category_id: subCategoryId },
-        include: { all: true },
-      })
-    ).products;
-    if (!products) {
+  async getByBody(categoryid: number, subcategoryid: number) {
+    console.log('vergul');
+    const subcategory = await this.subCategoryRepository.findOne({
+      where: { category_id: categoryid, sub_category_id: subcategoryid },
+      include: { all: true },
+    });
+
+    if (!subcategory) {
       throw new BadRequestException('subCategory not found or it is empty');
     }
-    return products;
+    return subcategory.products;
   }
 }

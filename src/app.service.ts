@@ -1,7 +1,19 @@
-import { BadRequestException, Injectable, Query, Request } from '@nestjs/common';
+import { BadRequestException, Injectable, Query } from '@nestjs/common';
 import { CategoriesService } from './categories/categories.service';
 import { ProductsService } from './pruducts/products.service';
 import { SubCategoriesService } from './subCategories/subCategories.service';
+
+interface IBody {
+  categoryid?: number;
+  categoryname?: string;
+  subcategoryid?: number;
+  subcategoryname?: number;
+  productid?: number;
+  model?: string;
+  color?: string;
+  price?: number;
+  productname?: string;
+}
 
 @Injectable()
 export class AppService {
@@ -11,13 +23,33 @@ export class AppService {
     private readonly productService: ProductsService,
   ) {}
 
-    async getByQuery(body) {
-        let str = JSON.stringify(body).toLowerCase();
-        str = JSON.parse(str);
-        console.log(str);
-    if (body.categoryId) {
+  async getByQuery(body) {
+    let str: IBody = JSON.parse(JSON.stringify(body).toLowerCase());
+    const {
+      categoryid,
+      subcategoryid,
+      categoryname,
+      subcategoryname,
+      productid,
+      productname,
+      model,
+      price,
+      color,
+    } = str;
+    console.log(str);
+    if (categoryid && subcategoryid) {
+      const products = await await this.subCategoryService.getByBody(
+        categoryid,
+        subcategoryid,
+      );
+      console.log(products, 'aaa');
+      if (!products) {
+        throw new BadRequestException('Products in this category not found');
+      }
+      return products;
+    } else if (categoryid) {
       const subCategories = await this.subCategoryService.getByCategory(
-        body.categoryId,
+        categoryid,
       );
       console.log(subCategories);
       let productsInThisCategory = [];
@@ -30,10 +62,9 @@ export class AppService {
         );
       }
       return productsInThisCategory;
-    }
-    if (body.subCategoryId) {
+    } else if (subcategoryid) {
       const products = await (
-        await this.subCategoryService.getOne(body.subCategoryId)
+        await this.subCategoryService.getOne(subcategoryid)
       ).products;
       if (!products) {
         throw new BadRequestException(
@@ -41,15 +72,7 @@ export class AppService {
         );
       }
       return products;
-    }
-    if (body.categoryId && body.subCategoryId) {
-      const products = await this.subCategoryService.getByBody(
-        body.categoryId,
-        body.subCategoryId,
-      );
-      return products;
-    }
-    if (
+    } else if (
       !body.categoryId &&
       (body.subcategoryId ||
         body.color ||
@@ -57,7 +80,6 @@ export class AppService {
         body.product_name ||
         body.price)
     ) {
-      console.log('111');
       const products = await this.productService.getProducts(body);
       return products;
     }
