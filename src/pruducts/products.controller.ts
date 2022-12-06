@@ -17,7 +17,6 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get('docs')
-  // @Redirect('https://docs.nestjs.com', 302)
   getDocs(@Query('version') version) {
     console.log(version);
     if (version && version === '5') {

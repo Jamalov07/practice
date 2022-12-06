@@ -36,7 +36,6 @@ export class AppService {
       price,
       color,
     } = str;
-    console.log(str);
     if (categoryid && subcategoryid) {
       const products = await await this.subCategoryService.getByBody(
         categoryid,
@@ -79,5 +78,6 @@ export class AppService {
       const products = await this.productService.getProducts(str);
       return products;
     }
+    return [];
   }
 }
